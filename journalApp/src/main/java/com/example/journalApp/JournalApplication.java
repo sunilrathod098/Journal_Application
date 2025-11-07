@@ -4,10 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JournaLAppApplication {
+public class JournalApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JournaLAppApplication.class, args);
+		SpringApplication.run(JournalApplication.class, args);
 	}
 
+    public static class JournalEntryController {
+    }
 }
