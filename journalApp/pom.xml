@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>journalApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>journa lApp</name>
+	<name>journalApp</name>
 	<description>Journal Application project for Spring Boot End to End Project</description>
 	<url/>
 	<licenses>
@@ -35,7 +35,19 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.42</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
