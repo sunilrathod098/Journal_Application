@@ -19,7 +19,4 @@ public class JournalEntry {
     private String content;
     private LocalDateTime date;
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
 }

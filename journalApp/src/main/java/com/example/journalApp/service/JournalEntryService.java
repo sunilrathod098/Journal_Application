@@ -25,24 +25,32 @@ public class JournalEntryService {
         UserModel user = userService.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        journalEntry.setDate(LocalDateTime.now());
+//        journalEntry.setDate(LocalDateTime.now());
         JournalEntry saved = journalEntryRepository.save(journalEntry);
 
         user.getJournalEntries().add(saved);
         userService.saveUser(user);
     }
 
+
+
     public void saveEntry(JournalEntry journalEntry) {
         journalEntryRepository.save(journalEntry);
     }
+
+
 
     public List<JournalEntry> getAll() {
         return journalEntryRepository.findAll();
     }
 
+
+
     public Optional<JournalEntry> findById(String id) {
         return journalEntryRepository.findById(new ObjectId(id));
     }
+
+
 
     @Transactional
     public void deleteById(String id, String username) {

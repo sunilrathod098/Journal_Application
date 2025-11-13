@@ -22,6 +22,7 @@ public class UserModel {
     private String username;
     private String password;
     private String email;
+    private List<String> roles;
 
     @DBRef
     private List<JournalEntry> journalEntries = new ArrayList<>();
