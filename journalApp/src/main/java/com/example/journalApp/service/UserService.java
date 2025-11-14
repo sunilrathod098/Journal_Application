@@ -14,7 +14,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void saveUser(UserModel user) {
+    public void saveEntity(UserModel user) {
+        userRepository.save(user);
+    }
+
+    public void saveNewUser(UserModel user) {
         userRepository.save(user);
     }
 
@@ -22,7 +26,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<UserModel> findById(ObjectId id) {
+    public Optional<UserModel> findById(String id) {
         return userRepository.findById(id);
     }
 
