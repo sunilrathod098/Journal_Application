@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public class JournalEntryService {
         JournalEntry saved = journalEntryRepository.save(journalEntry);
 
         user.getJournalEntries().add(saved);
-        userService.saveUser(user);
+        userService.saveNewUser(user);
     }
 
 
@@ -58,7 +58,7 @@ public class JournalEntryService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.getJournalEntries().removeIf(e -> e.getId().toHexString().equals(id));
-        userService.saveUser(user);
+        userService.saveNewUser(user);
 
         journalEntryRepository.deleteById(new ObjectId(id));
     }
