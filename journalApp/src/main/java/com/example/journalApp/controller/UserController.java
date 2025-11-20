@@ -2,6 +2,7 @@ package com.example.journalApp.controller;
 
 import com.example.journalApp.entity.UserModel;
 import com.example.journalApp.service.UserService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,11 @@ public class UserController {
                     return ResponseEntity.ok("User updated successfully");
                 })
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found"));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable ObjectId id) {
+        userService.deleteById(id);
+        return ResponseEntity.ok("User delete successfully");
     }
 }
