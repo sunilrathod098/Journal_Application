@@ -3,6 +3,7 @@ package com.example.journalApp.service;
 import com.example.journalApp.entity.UserModel;
 import com.example.journalApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,10 +29,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         UserModel dbUser = user.get();
 
+        if (!dbUser.getActive() == dbUser.getActive()) {
+            throw new DisabledException("User is disabled");
+        }
+
+        String[] roles = dbUser.getRoles() == null || dbUser.getRoles().isEmpty() ?
+                new String[]{"USER"} :
+                dbUser.getRoles().toArray(new String[0]);
+
         return User.builder()
                 .username(dbUser.getUsername())
                 .password(dbUser.getPassword())
-                .roles(dbUser.getRoles().toArray(new String[0]))
+                .roles(roles)
                 .build();
     }
 }

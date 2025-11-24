@@ -1,5 +1,8 @@
 package com.example.journalApp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -13,6 +16,8 @@ import java.util.List;
 @Document(collection = "users")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserModel {
 
     @Id
@@ -20,10 +25,19 @@ public class UserModel {
 
     @Indexed(unique = true)
     private String username;
+    @JsonIgnore
     private String password;
     private String email;
     private List<String> roles;
+    public boolean getActive = true;
 
     @DBRef
     private List<JournalEntry> journalEntries = new ArrayList<>();
+
+    public boolean getActive() {
+        return false;
+    }
+
+    public void setActive() {
+    }
 }

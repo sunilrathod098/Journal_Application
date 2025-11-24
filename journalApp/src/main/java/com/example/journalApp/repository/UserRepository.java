@@ -5,10 +5,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
-public interface UserRepository extends MongoRepository<UserModel, ObjectId> {
+public interface UserRepository extends MongoRepository<UserModel, String> {
     Optional<UserModel> findByUsername(String username);
 
-    Optional<UserModel> findById(ObjectId id);
-
-    Optional<UserModel> findById(String id);
+//    Optional<UserModel> findById(String userId);/
 }

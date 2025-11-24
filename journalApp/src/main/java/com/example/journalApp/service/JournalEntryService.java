@@ -25,11 +25,12 @@ public class JournalEntryService {
         UserModel user = userService.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-//        journalEntry.setDate(LocalDateTime.now());
+        //here we set owner id
+        journalEntry.setUserId(user.getId() != null ? user.getId().toHexString() : null);
         JournalEntry saved = journalEntryRepository.save(journalEntry);
 
         user.getJournalEntries().add(saved);
-        userService.saveNewUser(user);
+        userService.saveEntity(user);
     }
 
 
@@ -47,7 +48,11 @@ public class JournalEntryService {
 
 
     public Optional<JournalEntry> findById(String id) {
-        return journalEntryRepository.findById(new ObjectId(id));
+        try {
+            return journalEntryRepository.findById(String.valueOf(new ObjectId(id)));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 
 
@@ -57,9 +62,13 @@ public class JournalEntryService {
         UserModel user = userService.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.getJournalEntries().removeIf(e -> e.getId().toHexString().equals(id));
-        userService.saveNewUser(user);
+        user.getJournalEntries().removeIf(entity -> entity.getId().toHexString().equals(id));
+        userService.saveEntity(user);
 
-        journalEntryRepository.deleteById(new ObjectId(id));
+        journalEntryRepository.deleteById(String.valueOf(new ObjectId(id)));
+    }
+
+    public List<JournalEntry> findByUserId(String userId) {
+        return journalEntryRepository.findByUserId(userId);
     }
 }

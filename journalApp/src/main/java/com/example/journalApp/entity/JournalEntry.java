@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class JournalEntry {
 
     @Id
@@ -17,6 +18,7 @@ public class JournalEntry {
 
     private String title;
     private String content;
-    private LocalDateTime date;
+    private String userId;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 }
