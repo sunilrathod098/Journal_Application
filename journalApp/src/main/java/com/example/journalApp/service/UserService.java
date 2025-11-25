@@ -26,8 +26,9 @@ public class UserService {
     //called for normal user registration
     public void saveNewUser(UserModel user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //System.out.println("Password received = " + user.getPassword());
         user.setRoles(List.of("USER"));
-        user.setActive();
+        user.setActive(true);
         userRepository.save(user);
     }
 
@@ -36,7 +37,7 @@ public class UserService {
     public void saveNewUserAsAdmin(UserModel user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(List.of("ADMIN"));
-        user.setActive();
+        user.setActive(true);
         userRepository.save(user);
     }
 
@@ -53,7 +54,10 @@ public class UserService {
         userRepository.deleteById(String.valueOf(id));
     }
 
-    public Optional<UserModel> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<UserModel> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public Optional<Object> findByEmail(String email) {
     }
 }

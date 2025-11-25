@@ -38,7 +38,7 @@ public class AdminService {
         // If your model has no active field, you can remove roles or add that field.
         // For demonstration, assume we set roles = ["BLOCKED"] (not ideal in production)
 //        user.setRoles(List.of("BLOCKED"));
-        user.setActive();
+        user.setActive(false);
         userRepository.save(user);
     }
 

@@ -33,7 +33,10 @@ public class SpringSecurity {
 
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/journal/**", "/user/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/journal/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -41,7 +44,9 @@ public class SpringSecurity {
                 .authenticationProvider(daoAuthenticationProvider())
                 // add JWT filter before UsernamePasswordAuthenticationFilter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(Customizer.withDefaults());
+                .sessionManagement(session -> session.disable())  // no session for JWT
+                .httpBasic(AbstractHttpConfigurer::disable)       // disable basic auth
+                .formLogin(AbstractHttpConfigurer::disable);       //disable login form
         return http.build();
     }
 

@@ -25,19 +25,12 @@ public class UserModel {
 
     @Indexed(unique = true)
     private String username;
-    @JsonIgnore
     private String password;
     private String email;
-    private List<String> roles;
-    public boolean getActive = true;
+    private List<String> roles =  new ArrayList<>();
+    private boolean active = true;
 
     @DBRef
     private List<JournalEntry> journalEntries = new ArrayList<>();
 
-    public boolean getActive() {
-        return false;
-    }
-
-    public void setActive() {
-    }
 }

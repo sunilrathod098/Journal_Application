@@ -34,23 +34,25 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody UserModel user) {
         try {
             userService.saveNewUser(user);
+            //System.out.println("Password received = " + user.getPassword());
             return ResponseEntity.status(201).body("User Registered Successfully");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Registration fsiled: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Registration failed: " + e.getMessage());
         }
     }
 
 
     //here we logged in the user through return JWT token
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
-        String username = body.get("username");
+        String email = body.get("email");
         String password = body.get("password");
 
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
         //if no exception, authentication succeeded
-        UserModel user = userService.findByUsername(username).orElseThrow();
-        String token = jwtUtil.generateToken(username, user.getRoles().isEmpty() ? "USER" : user.getRoles().get(0));
+        UserModel user = userService.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRoles().isEmpty() ? "USER" : user.getRoles().get(0));
         return ResponseEntity.ok(Map.of("Token", token));
     }
 }

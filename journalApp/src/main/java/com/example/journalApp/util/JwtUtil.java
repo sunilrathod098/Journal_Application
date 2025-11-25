@@ -4,7 +4,9 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,8 +16,8 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration-ms}")
-    private long jwtExpirationMs;
+    @Value("${jwt.expiration}")
+    private Duration jwtExpiration;
 
 
     private Key getSigningKey() {
@@ -25,7 +27,7 @@ public class JwtUtil {
 
     public String generateToken(String username, String role) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + jwtExpirationMs);
+        Date expiry = new Date(String.valueOf(jwtExpiration));
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)

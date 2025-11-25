@@ -19,17 +19,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Optional<UserModel> user = userRepository.findByUsername(username);
+        Optional<UserModel> user = Optional.ofNullable(userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found: " + email)));
 
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found: " + username);
+            throw new UsernameNotFoundException("User not found: " + email);
         }
 
         UserModel dbUser = user.get();
 
-        if (!dbUser.getActive() == dbUser.getActive()) {
+        if (!dbUser.isActive()) {
             throw new DisabledException("User is disabled");
         }
 
@@ -38,9 +38,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 dbUser.getRoles().toArray(new String[0]);
 
         return User.builder()
-                .username(dbUser.getUsername())
+                .username(dbUser.getEmail())
                 .password(dbUser.getPassword())
                 .roles(roles)
+                .disabled(!dbUser.isActive())
                 .build();
     }
 }
